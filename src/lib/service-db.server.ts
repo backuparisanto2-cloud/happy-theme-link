@@ -62,8 +62,15 @@ export async function getServiceDb(): Promise<Db> {
   return client;
 }
 
-/** Shared secret guard for worker/cron endpoints. */
+/** Shared secret guard for worker endpoints (pull/status). */
 export function checkWorkerSecret(request: Request): boolean {
   const secret = process.env["WHATSAPP_WORKER_SECRET"];
   return Boolean(secret) && request.headers.get("x-worker-secret") === secret;
+}
+
+/** Guard for the scheduler endpoint: worker secret or the cron key. */
+export function checkSchedulerSecret(request: Request): boolean {
+  if (checkWorkerSecret(request)) return true;
+  const cronSecret = process.env["CRON_SECRET"];
+  return Boolean(cronSecret) && request.headers.get("x-cron-secret") === cronSecret;
 }

@@ -10,8 +10,8 @@ export const Route = createFileRoute("/api/public/hooks/dispatch-reminders")({
   server: {
     handlers: {
       POST: async ({ request }) => {
-        const { checkWorkerSecret, getServiceDb } = await import("@/lib/service-db.server");
-        if (!checkWorkerSecret(request)) {
+        const { checkSchedulerSecret, getServiceDb } = await import("@/lib/service-db.server");
+        if (!checkSchedulerSecret(request)) {
           return Response.json({ error: "Unauthorized" }, { status: 401 });
         }
 

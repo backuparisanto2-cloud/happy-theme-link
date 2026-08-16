@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as AuthRouteImport } from './routes/auth'
+import { Route as WorkerSetupRouteImport } from './routes/worker-setup'
 import { Route as AuthenticatedIndexRouteImport } from './routes/_authenticated/index'
 import { Route as AuthenticatedContactsRouteImport } from './routes/_authenticated/contacts'
 import { Route as AuthenticatedLogsRouteImport } from './routes/_authenticated/logs'
@@ -27,6 +28,11 @@ const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
 const AuthRoute = AuthRouteImport.update({
   id: '/auth',
   path: '/auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const WorkerSetupRoute = WorkerSetupRouteImport.update({
+  id: '/worker-setup',
+  path: '/worker-setup',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthenticatedIndexRoute = AuthenticatedIndexRouteImport.update({
@@ -74,6 +80,7 @@ const ApiPublicWhatsappStatusRoute = ApiPublicWhatsappStatusRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof AuthenticatedIndexRoute
   '/auth': typeof AuthRoute
+  '/worker-setup': typeof WorkerSetupRoute
   '/contacts': typeof AuthenticatedContactsRoute
   '/logs': typeof AuthenticatedLogsRoute
   '/reminders': typeof AuthenticatedRemindersRoute
@@ -84,6 +91,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/auth': typeof AuthRoute
+  '/worker-setup': typeof WorkerSetupRoute
   '/contacts': typeof AuthenticatedContactsRoute
   '/logs': typeof AuthenticatedLogsRoute
   '/reminders': typeof AuthenticatedRemindersRoute
@@ -97,6 +105,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/auth': typeof AuthRoute
+  '/worker-setup': typeof WorkerSetupRoute
   '/_authenticated/contacts': typeof AuthenticatedContactsRoute
   '/_authenticated/logs': typeof AuthenticatedLogsRoute
   '/_authenticated/reminders': typeof AuthenticatedRemindersRoute
@@ -111,6 +120,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/auth'
+    | '/worker-setup'
     | '/contacts'
     | '/logs'
     | '/reminders'
@@ -121,6 +131,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/auth'
+    | '/worker-setup'
     | '/contacts'
     | '/logs'
     | '/reminders'
@@ -133,6 +144,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/_authenticated'
     | '/auth'
+    | '/worker-setup'
     | '/_authenticated/contacts'
     | '/_authenticated/logs'
     | '/_authenticated/reminders'
@@ -146,6 +158,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   AuthRoute: typeof AuthRoute
+  WorkerSetupRoute: typeof WorkerSetupRoute
   ApiPublicHooksDispatchRemindersRoute: typeof ApiPublicHooksDispatchRemindersRoute
   ApiPublicWhatsappPullRoute: typeof ApiPublicWhatsappPullRoute
   ApiPublicWhatsappStatusRoute: typeof ApiPublicWhatsappStatusRoute
@@ -165,6 +178,13 @@ declare module '@tanstack/react-router' {
       path: '/auth'
       fullPath: '/auth'
       preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/worker-setup': {
+      id: '/worker-setup'
+      path: '/worker-setup'
+      fullPath: '/worker-setup'
+      preLoaderRoute: typeof WorkerSetupRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_authenticated/': {
@@ -248,6 +268,7 @@ const AuthenticatedRouteRouteWithChildren =
 const rootRouteChildren: RootRouteChildren = {
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   AuthRoute: AuthRoute,
+  WorkerSetupRoute: WorkerSetupRoute,
   ApiPublicHooksDispatchRemindersRoute: ApiPublicHooksDispatchRemindersRoute,
   ApiPublicWhatsappPullRoute: ApiPublicWhatsappPullRoute,
   ApiPublicWhatsappStatusRoute: ApiPublicWhatsappStatusRoute,

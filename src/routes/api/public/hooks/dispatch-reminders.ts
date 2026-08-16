@@ -9,11 +9,16 @@ import { computeNextRun, type ScheduleType } from "@/lib/schedule";
 export const Route = createFileRoute("/api/public/hooks/dispatch-reminders")({
   server: {
     handlers: {
-      POST: async () => {
-        const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+      POST: async ({ request }) => {
+        const { checkSchedulerSecret, getServiceDb } = await import("@/lib/service-db.server");
+        if (!checkSchedulerSecret(request)) {
+          return Response.json({ error: "Unauthorized" }, { status: 401 });
+        }
+
+        const db = await getServiceDb();
         const now = new Date();
 
-        const { data: due, error } = await supabaseAdmin
+        const { data: due, error } = await db
           .from("reminders")
           .select("*")
           .eq("status", "active")
@@ -30,7 +35,7 @@ export const Route = createFileRoute("/api/public/hooks/dispatch-reminders")({
         for (const reminder of due ?? []) {
           let contactIds: string[] = [];
           if (reminder.target_type === "group" && reminder.group_id) {
-            const { data: members } = await supabaseAdmin
+            const { data: members } = await db
               .from("group_members")
               .select("contact_id")
               .eq("group_id", reminder.group_id);
@@ -40,7 +45,7 @@ export const Route = createFileRoute("/api/public/hooks/dispatch-reminders")({
           }
 
           if (contactIds.length) {
-            const { data: contacts } = await supabaseAdmin
+            const { data: contacts } = await db
               .from("contacts")
               .select("id, name, phone")
               .in("id", contactIds);
@@ -57,7 +62,7 @@ export const Route = createFileRoute("/api/public/hooks/dispatch-reminders")({
             }));
 
             if (rows.length) {
-              const { error: insertError } = await supabaseAdmin.from("message_logs").insert(rows);
+              const { error: insertError } = await db.from("message_logs").insert(rows);
               if (!insertError) queued += rows.length;
             }
           }
@@ -83,7 +88,7 @@ export const Route = createFileRoute("/api/public/hooks/dispatch-reminders")({
                 now,
               );
 
-          await supabaseAdmin
+          await db
             .from("reminders")
             .update({
               occurrence_count: occurrenceCount,

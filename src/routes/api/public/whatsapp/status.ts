@@ -19,8 +19,8 @@ export const Route = createFileRoute("/api/public/whatsapp/status")({
   server: {
     handlers: {
       POST: async ({ request }) => {
-        const secret = process.env["WHATSAPP_WORKER_SECRET"];
-        if (!secret || request.headers.get("x-worker-secret") !== secret) {
+        const { checkWorkerSecret, getServiceDb } = await import("@/lib/service-db.server");
+        if (!checkWorkerSecret(request)) {
           return Response.json({ error: "Unauthorized" }, { status: 401 });
         }
 
@@ -29,17 +29,17 @@ export const Route = createFileRoute("/api/public/whatsapp/status")({
           return Response.json({ error: "Invalid payload" }, { status: 400 });
         }
 
-        const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+        const db = await getServiceDb();
         let updated = 0;
 
         for (const result of parsed.data.results) {
-          const { data: existing } = await supabaseAdmin
+          const { data: existing } = await db
             .from("message_logs")
             .select("attempts")
             .eq("id", result.id)
             .maybeSingle();
 
-          const { error } = await supabaseAdmin
+          const { error } = await db
             .from("message_logs")
             .update({
               status: result.status,

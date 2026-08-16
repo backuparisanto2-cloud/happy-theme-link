@@ -2,7 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
-import { BookOpen, PlugZap } from "lucide-react";
+import { BookOpen, KeyRound, PlugZap } from "lucide-react";
 
 import { PageHeader } from "@/components/PageHeader";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -137,12 +137,20 @@ function SettingsPage() {
               Worker menarik pesan berstatus <code>queued</code>, mengirimnya melalui whatsapp-web.js, lalu
               melaporkan hasilnya kembali ke endpoint status.
             </p>
-            <Button asChild variant="outline" className="gap-2">
-              <Link to="/worker-setup">
-                <BookOpen className="h-4 w-4" />
-                Panduan setup worker (Windows 10)
-              </Link>
-            </Button>
+            <div className="flex flex-wrap gap-2">
+              <Button asChild variant="outline" className="gap-2">
+                <Link to="/worker-secret">
+                  <KeyRound className="h-4 w-4" />
+                  Wizard secret worker
+                </Link>
+              </Button>
+              <Button asChild variant="outline" className="gap-2">
+                <Link to="/worker-setup">
+                  <BookOpen className="h-4 w-4" />
+                  Panduan setup worker (Windows 10)
+                </Link>
+              </Button>
+            </div>
           </CardContent>
         </Card>
       </div>

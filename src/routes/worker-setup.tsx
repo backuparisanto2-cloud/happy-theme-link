@@ -140,7 +140,15 @@ function WorkerSetupPage() {
         <Step n={3} title="Buat nilai WHATSAPP_WORKER_SECRET">
           <p>Satu nilai acak, dipakai di dua file: <code>.env</code> aplikasi dan <code>worker/.env</code>.</p>
           <CodeBlock label="PowerShell" code={genSecret} />
-          <p>Simpan di password manager. Kalau berbeda, worker akan menerima 401.</p>
+          <p>
+            Simpan di password manager. Kalau berbeda, worker akan menerima 401. Setelah aplikasi berjalan
+            (langkah 5), Anda juga bisa memakai{" "}
+            <Link to="/worker-secret" className="font-medium text-foreground underline underline-offset-4">
+              wizard secret worker
+            </Link>{" "}
+            di dalam aplikasi: nilai acak dibuat dan langsung ditulis ke <code>.env</code> dan{" "}
+            <code>worker/.env</code> sekaligus, lalu divalidasi agar tidak mismatch.
+          </p>
         </Step>
 
         <Step n={4} title="Isi file .env aplikasi">

@@ -17,6 +17,7 @@ import { Route as AuthenticatedContactsRouteImport } from './routes/_authenticat
 import { Route as AuthenticatedLogsRouteImport } from './routes/_authenticated/logs'
 import { Route as AuthenticatedRemindersRouteImport } from './routes/_authenticated/reminders'
 import { Route as AuthenticatedSettingsRouteImport } from './routes/_authenticated/settings'
+import { Route as AuthenticatedWorkerSecretRouteImport } from './routes/_authenticated/worker-secret'
 import { Route as ApiPublicHooksDispatchRemindersRouteImport } from './routes/api/public/hooks/dispatch-reminders'
 import { Route as ApiPublicWhatsappPullRouteImport } from './routes/api/public/whatsapp/pull'
 import { Route as ApiPublicWhatsappStatusRouteImport } from './routes/api/public/whatsapp/status'
@@ -60,6 +61,12 @@ const AuthenticatedSettingsRoute = AuthenticatedSettingsRouteImport.update({
   path: '/settings',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedWorkerSecretRoute =
+  AuthenticatedWorkerSecretRouteImport.update({
+    id: '/worker-secret',
+    path: '/worker-secret',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const ApiPublicHooksDispatchRemindersRoute =
   ApiPublicHooksDispatchRemindersRouteImport.update({
     id: '/api/public/hooks/dispatch-reminders',
@@ -85,6 +92,7 @@ export interface FileRoutesByFullPath {
   '/logs': typeof AuthenticatedLogsRoute
   '/reminders': typeof AuthenticatedRemindersRoute
   '/settings': typeof AuthenticatedSettingsRoute
+  '/worker-secret': typeof AuthenticatedWorkerSecretRoute
   '/api/public/hooks/dispatch-reminders': typeof ApiPublicHooksDispatchRemindersRoute
   '/api/public/whatsapp/pull': typeof ApiPublicWhatsappPullRoute
   '/api/public/whatsapp/status': typeof ApiPublicWhatsappStatusRoute
@@ -96,6 +104,7 @@ export interface FileRoutesByTo {
   '/logs': typeof AuthenticatedLogsRoute
   '/reminders': typeof AuthenticatedRemindersRoute
   '/settings': typeof AuthenticatedSettingsRoute
+  '/worker-secret': typeof AuthenticatedWorkerSecretRoute
   '/': typeof AuthenticatedIndexRoute
   '/api/public/hooks/dispatch-reminders': typeof ApiPublicHooksDispatchRemindersRoute
   '/api/public/whatsapp/pull': typeof ApiPublicWhatsappPullRoute
@@ -110,6 +119,7 @@ export interface FileRoutesById {
   '/_authenticated/logs': typeof AuthenticatedLogsRoute
   '/_authenticated/reminders': typeof AuthenticatedRemindersRoute
   '/_authenticated/settings': typeof AuthenticatedSettingsRoute
+  '/_authenticated/worker-secret': typeof AuthenticatedWorkerSecretRoute
   '/_authenticated/': typeof AuthenticatedIndexRoute
   '/api/public/hooks/dispatch-reminders': typeof ApiPublicHooksDispatchRemindersRoute
   '/api/public/whatsapp/pull': typeof ApiPublicWhatsappPullRoute
@@ -125,6 +135,7 @@ export interface FileRouteTypes {
     | '/logs'
     | '/reminders'
     | '/settings'
+    | '/worker-secret'
     | '/api/public/hooks/dispatch-reminders'
     | '/api/public/whatsapp/pull'
     | '/api/public/whatsapp/status'
@@ -136,6 +147,7 @@ export interface FileRouteTypes {
     | '/logs'
     | '/reminders'
     | '/settings'
+    | '/worker-secret'
     | '/'
     | '/api/public/hooks/dispatch-reminders'
     | '/api/public/whatsapp/pull'
@@ -149,6 +161,7 @@ export interface FileRouteTypes {
     | '/_authenticated/logs'
     | '/_authenticated/reminders'
     | '/_authenticated/settings'
+    | '/_authenticated/worker-secret'
     | '/_authenticated/'
     | '/api/public/hooks/dispatch-reminders'
     | '/api/public/whatsapp/pull'
@@ -222,6 +235,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedSettingsRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/worker-secret': {
+      id: '/_authenticated/worker-secret'
+      path: '/worker-secret'
+      fullPath: '/worker-secret'
+      preLoaderRoute: typeof AuthenticatedWorkerSecretRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/api/public/hooks/dispatch-reminders': {
       id: '/api/public/hooks/dispatch-reminders'
       path: '/api/public/hooks/dispatch-reminders'
@@ -251,6 +271,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedLogsRoute: typeof AuthenticatedLogsRoute
   AuthenticatedRemindersRoute: typeof AuthenticatedRemindersRoute
   AuthenticatedSettingsRoute: typeof AuthenticatedSettingsRoute
+  AuthenticatedWorkerSecretRoute: typeof AuthenticatedWorkerSecretRoute
   AuthenticatedIndexRoute: typeof AuthenticatedIndexRoute
 }
 
@@ -259,6 +280,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedLogsRoute: AuthenticatedLogsRoute,
   AuthenticatedRemindersRoute: AuthenticatedRemindersRoute,
   AuthenticatedSettingsRoute: AuthenticatedSettingsRoute,
+  AuthenticatedWorkerSecretRoute: AuthenticatedWorkerSecretRoute,
   AuthenticatedIndexRoute: AuthenticatedIndexRoute,
 }
 
